@@ -5,7 +5,7 @@ return {
 		dependencies = {
 			"williamboman/mason.nvim",
 			"williamboman/mason-lspconfig.nvim",
-			"j-hui/fidget.nvim",
+			{ "j-hui/fidget.nvim", tag="legacy" },
 			"folke/neodev.nvim",
 			"RRethy/vim-illuminate",
 			"hrsh7th/cmp-nvim-lsp",
@@ -17,6 +17,7 @@ return {
 				ensure_installed = {
 					"lua_ls",
 					"pylsp",
+					"tsserver"
 				},
 				automatic_installation = true,
 			})
@@ -118,7 +119,7 @@ return {
 						plugins = {
 							flake8 = {
 								enabled = true,
-								maxLineLength = 88, -- Black's line length
+								maxLineLength = 120, -- Black's line length
 							},
 							-- Disable plugins overlapping with flake8
 							pycodestyle = {
@@ -138,6 +139,11 @@ return {
 					},
 				},
 			})
+
+			require("lspconfig")["tsserver"].setup({
+				on_attach = on_attach,
+				capabilities = capabilities,
+          	      })
 		end,
 	},
 }
