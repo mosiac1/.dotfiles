@@ -1,2 +1,63 @@
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 
+alias python3='python3.11'
+alias pip3='python3.11 -m pip'
+
+alias dc='docker compose'
+
+alias set-proxy='source $HOME/.scripts/set_proxy'
+alias unset-proxy='source $HOME/.scripts/unset_proxy'
+
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+alias c='clear'
+
+# Git shortcuts
+alias gpum='git pull upstream main'
+alias gpuma='git pull upstream master'
+alias gp='git push'
+alias ga='git add .'
+alias gs='git status'
+alias gc='git commit'
+alias gcm='git commit -m'
+alias gco="git checkout"
+
+# GitHub CLI
+GH_HOST_FILE=~/.gh-cli-gh-host
+
+touch $GH_HOST_FILE
+
+alias gh='GH_HOST=$(cat $GH_HOST_FILE) gh'
+
+funtion gh-host() {
+    echo "Using $(cat $GH_HOST_FILE) as the Github CLI host"
+}
+
+function gh-github() {
+    echo "github.com" > $GH_HOST_FILE
+    gh-host
+}
+
+# URL encode/decode functions
+function urlencode() {
+    if [[ -n "$1" ]]; then
+        INPUT=$1
+    elif [[ ! -t 0 ]]; then
+        INPUT=$(cat)
+    else
+        echo "Usage: $0 <text> OR echo <text> | $0"
+    fi
+    echo $(python3 -c "import urllib.parse; print(urllib.parse.quote('''${INPUT}'''))")
+}
+
+function urldecode() {
+    if [[ -n "$1" ]]; then
+        INPUT=$1
+    elif [[ ! -t 0 ]]; then
+        INPUT=$(cat)
+    else
+        echo "Usage: $0 <text> OR echo <text> | $0"
+    fi
+    echo $(python3 -c "import urllib.parse; print(urllib.parse.unquote('''${INPUT}'''))")
+}

@@ -10,6 +10,10 @@ return {
 			"RRethy/vim-illuminate",
 			"hrsh7th/cmp-nvim-lsp",
 		},
+		-- Don't enable if running in vscode
+		cond = function()
+			return not vim.g.vscode
+		end,
 		config = function()
 			-- Set up Mason before anything else
 			require("mason").setup()
@@ -17,7 +21,7 @@ return {
 				ensure_installed = {
 					"lua_ls",
 					"pylsp",
-					"tsserver"
+					"ts_ls",
 				},
 				automatic_installation = true,
 			})
@@ -140,10 +144,23 @@ return {
 				},
 			})
 
-			require("lspconfig")["tsserver"].setup({
+			-- Typescript --
+			require("lspconfig")["ts_ls"].setup({
 				on_attach = on_attach,
 				capabilities = capabilities,
-          	      })
+          	        })
+
+			-- XML and XSD --
+			require("lspconfig")["lemminx"].setup({
+				on_attach = on_attach,
+				capabilities = capabilities,
+				xml = {
+					server = {
+						workDir = "~/.cache/lemminx"
+					}
+				}
+			})
+
 		end,
 	},
 }

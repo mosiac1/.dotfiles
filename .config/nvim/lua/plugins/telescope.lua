@@ -42,5 +42,8 @@ return {
 
 			map("n", "<C-p>", require("telescope.builtin").keymaps, "Search keymaps")
 		end,
+		cond = function()
+			return not vim.g.vscode
+		end,
 	},
 }

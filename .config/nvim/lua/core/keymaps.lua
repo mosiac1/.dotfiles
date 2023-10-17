@@ -1,3 +1,4 @@
+-- This file is automatically loaded by lazyvim.config.init
 local map = require("helpers.keys").map
 
 -- Blazingly fast way out of insert mode
@@ -60,3 +61,22 @@ end, "Toggle between light and dark themes")
 
 -- Clear after search
 map("n", "<leader>ur", "<cmd>nohl<cr>", "Clear highlights")
+
+-- diagnostic
+local diagnostic_goto = function(next, severity)
+	local go = next and vim.diagnostic.goto_next or vim.diagnostic.goto_prev
+	severity = severity and vim.diagnostic.severity[severity] or nil
+	return function()
+		go({ severity = severity })
+	end
+end
+map("n", "<leader>cd", vim.diagnostic.open_float, "Line Diagnostics")
+map("n", "]d", diagnostic_goto(true), "Next Diagnostic")
+map("n", "[d", diagnostic_goto(false), "Prev Diagnostic")
+map("n", "]e", diagnostic_goto(true, "ERROR"), "Next Error")
+map("n", "[e", diagnostic_goto(false, "ERROR"), "Prev Error")
+map("n", "]w", diagnostic_goto(true, "WARN"), "Next Warning")
+map("n", "[w", diagnostic_goto(false, "WARN"), "Prev Warning")
+
+-- quit
+map("n", "<leader>qq", "<cmd>qa<cr>", "Quit all")

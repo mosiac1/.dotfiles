@@ -7,6 +7,8 @@ fi
 
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/.local/bin:$HOME/bin:/usr/local/bin:$HOME/.local/share/JetBrains/Toolbox/scripts:$PATH
+export PATH=/opt/homebrew/opt/openresty/nginx/sbin/:$PATH
+export PATH=/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -45,7 +47,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 zstyle ':omz:update' mode reminder  # just remind me to update when it's time
 
 # Uncomment the following line to change how often to auto-update (in days).
-# zstyle ':omz:update' frequency 13
+zstyle ':omz:update' frequency 2
 
 # Uncomment the following line if pasting URLs and other text is messed up.
 # DISABLE_MAGIC_FUNCTIONS="true"
@@ -57,7 +59,7 @@ zstyle ':omz:update' mode reminder  # just remind me to update when it's time
 # DISABLE_AUTO_TITLE="true"
 
 # Uncomment the following line to enable command auto-correction.
-ENABLE_CORRECTION="true"
+# ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
 # You can also set it to another string to have that shown instead of the default red dots.
@@ -87,19 +89,30 @@ ENABLE_CORRECTION="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(	
+aliases
 git
 asdf
-zsh-autosuggestions
-zsh-syntax-highlighting
 docker
+docker-compose
+dotenv
 colorize
 colored-man-pages
 fasd
+fzf
 tmux
-mongocli
+web-search
+jump
+nvm
+zsh-autosuggestions # https://github.com/zsh-users/zsh-autosuggestions
+zsh-syntax-highlighting # https://github.com/zsh-users/zsh-syntax-highlighting
+zsh-vi-mode       # https://github.com/jeffreytse/zsh-vi-mode
+zsh-eza           # https://github.com/eza-community/eza, https://github.com/z-shell/zsh-eza
+zsh-autocomplete  # https://github.com/marlonrichert/zsh-autocomplete
+zsh-completions   # https://github.com/zsh-users/zsh-completions
 )
 
-source $ZSH/oh-my-zsh.sh
+# NVM is very slow to load
+zstyle ':omz:plugins:nvm' lazy yes
 
 # User configuration
 
@@ -108,13 +121,47 @@ EDITOR='nvim'
 # Load custom aliases
 source $HOME/.aliasrc
 
+# Set proxy on start
+if [ -f ~/.scripts/set_proxy ]; then
+    . ~/.scripts/set_proxy
+fi
+
+# Enable Docker buildkit
+export DOCKER_BUILDKIT=1
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# Add go install dir to path
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOPATH/bin
+
+# Add Brew packages to path
+export PATH=$PATH:/opt/homebrew/opt
+
+# Add .scripts to path
+export PATH=$PATH:/$HOME/.scripts
+
+# Item2 Autocomplete and integration
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+# MacOS Autocomplete issue
+autoload -Uz compinit
+compinit
+
+# Add Brew autocomplete
+if type brew &>/dev/null; then
+  FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+fi
+
+# Add jwt-cli Autocomplete https://github.com/mike-engel/jwt-cli
+if hash jwt &> /dev/null; then
+  source <(jwt completion bash)
+fi
+
+# FPATH needs to be finalized before this point
+source $ZSH/oh-my-zsh.sh
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

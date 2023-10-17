@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# Add config to set proxy env variables
+
+# export http_proxy=
+# export https_proxy=
+# export HTTP_PROXY="$http_proxy"
+# export HTTPS_PROXY="$http_proxy"
+# export no_proxy="localhost,*.local.gate0.net,local.gate0.net"
+

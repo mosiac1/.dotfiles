@@ -23,5 +23,8 @@ return {
 				"Toggle file explorer"
 			)
 		end,
+		cond = function()
+			return not vim.g.vscode
+		end,
 	},
 }

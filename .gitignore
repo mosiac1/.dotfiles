@@ -1,3 +1,7 @@
 .cfg
-.m2
+.m2/repository
 .cache
+.scripts/bb-nodeproxy
+.config/raycast
+.config/localStoragePy
+.config/jgit

@@ -1,0 +1,15 @@
+[init]
+	defaultBranch = main
+[core]
+	autocrlf = input
+	eol = lf
+	filemode = true
+	editor = nvim
+	excludesfile = /Users/mosiac/.gitignore_global
+[user]
+	name = osiaccr
+	email = osiaccr@gmail.com
+[alias]
+	logdog = log --decorate --oneline --graph
+[credential]
+	helper = osxkeychain

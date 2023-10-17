@@ -21,4 +21,12 @@ return {
 	},
 	"tpope/vim-sleuth", -- Detect tabstop and shiftwidth automatically
 	"tpope/vim-surround", -- Surround stuff with the ys-, cs-, ds- commands
+	{
+		"rmagatti/auto-session", -- Save sessions and bring them back
+		config = function ()
+			require("auto-session").setup()
+		end,
+	},
+	-- Tmux pane switching integration
+	"christoomey/vim-tmux-navigator"
 }
